@@ -1,52 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en-UK">
 
-<html lang="en">
-	<head>
-	 	<meta charset="utf-8">
-		<meta name="description" content="The HTML5 Herald">
-		<meta name="author" content="Joanne Robert">
+    <head>
+        <meta charset="utf-8"><meta name="description" content="The HTML5 Herald">
+        <meta name="author" content="Joanne Robert">
 
-		<title>Cloudy Topics</title>
+        <title>Cloudy Topics</title>
 
-		<link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css">
 
-		<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-		<script src="js/d3-cloud/d3.layout.cloud.js"></script>
-  		<script src="js/main.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+        <script src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
 
-	</head>
+        <script src="js/d3.min.js"></script>
+        <script src="js/d3-cloud/d3.layout.cloud.js"></script>
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/underscore-min.js"></script>
+        <script src="js/backbone-min.js"></script>
 
-	<body>
+    </head>
 
-		<div class="main-container">
+    <body>
 
-			<h1>Cloudy Topics</h1>
+        <div class="main-container">
 
-	      	<div class="row">
+            <h1>Cloudy Topics</h1>
 
-	      		<div class="col-70pct">
+            <div class="row">
 
-	      			<div class="chart-container" id="cloud-container">
-	      			</div>
-	      			
-	      		</div>
+                <div class="col-70pct">
 
-	      		<div class="col-30pct">
-	      		</div>
+                    <div class="chart-container" id="cloud-container">
+                    </div>
+                    
+                </div>
 
-	      	</div>
+                <div class="col-30pct">
+                </div>
 
-	    </div>
-       	
-     	<script type="text/javascript">
-     		initCloud();
-     		window.onresize = initCloud;
-     	</script>
+            </div>
 
-	</body>
+        </div>
+        
+        <script type="text/javascript">
+            // initCloud();
+            // window.onresize = initCloud;
+        </script>
+
+
+        <script src="js/view.js" type="text/javascript"></script>
+    </body>
 
 </html>
