@@ -1,0 +1,30 @@
+
+body{
+    background-color: dimgrey;
+}
+h1{
+    padding: 15px 5px;
+    text-align: center;
+    border-bottom: 1px dimgrey solid;
+    font-family: fantasy;
+    font-weight: 200;
+    color: dimgrey;
+}
+.main-container {
+    width: 90%;
+    min-width: 500px;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+}
+.chart-container{
+    min-height: 500px;
+    max-height: 800px;
+}
+.col-70pct{
+    width: 70%;
+}
+.col-30pct{
+    width: 30%;
+}
