@@ -3,12 +3,11 @@
 	var MainView = Backbone.View.extend({
 
 		data: null,
+		layout: null,
 
-		el: $('body'), 
+		el: $('body'),
 
 		initialize: function () {
-
-			// var success = ;
 
 			d3.json("topics.json", _.bind(function (error, json) {
 		  	
@@ -16,77 +15,88 @@
 				  		return console.warn(error);
 				  	}
 
-				  	data = json.topics;
-				  	this.renderCloud(json.topics);
+				  	this.data = json.topics;
+				  	this.renderCloud();
+
+					$(window).on('resize', _.bind(this.renderCloud, this));
 
 				}, this)
 			);
+
+			$('.draggablePanel').draggable({ handle: '.panel-heading' });
 		},
 
-		renderCloud: function (topics) {
+		renderCloud: function () {
 
-			var volumes = topics.map(function (d) { return Math.log(d.volume); });
-			var volumeMax = d3.max(volumes),
-				volumeMin = d3.min(volumes);
+			var volumes = this.data.map(function (d) { return Math.log(d.volume); });
+			var volumeMax = d3.max(volumes);
+			var volumeMin = d3.min(volumes);
 			var fontSizeScale = d3.scale.linear()
 		        .domain([0, (volumeMax - volumeMin)])
 		        .range([0, 6]);
 			var size6Levels = function (d) {
-				
-				return 10 + Math.floor(fontSizeScale(Math.log(d.volume) - volumeMin)) * 10;
+				return 20 + Math.floor(fontSizeScale(Math.log(d.volume) - volumeMin)) * 7;
 			};
 
 			var dim = this.pickWidthHeight();
-			var fill = this.fillRedGreenGrey();
-			var size = this.size6Levels();
+			var fill = this.fillRedGreenGrey;
 
-			var layout = d3.layout.cloud()
+			this.layout = d3.layout.cloud()
 			    .size([dim.width, dim.height])
-			    .words(topics.map(function (d) {
+			    .words(this.data.map(function (d) {
 			    	return { 
 			    		text: d.label, 
 			    		size: size6Levels(d), 
-			    		colour: fill(d)
+			    		colour: fill(d),
+			    		details: {
+			    			total_volume: d.volume,
+			    			sentiment_breakdown: d.sentiment
+			    		}
 			    	};
 			    }))
 			    .padding(5)
-			    .rotate(function () { return 0; })
+			    .rotate(0)
 			    .font("Impact")
 			    .fontSize(function (d) { return d.size; })
-			    .on("end", drawCloudWords);
+			    .on("end", _.bind(this.drawCloudWords, this));
 
-			layout.start();
+			this.layout.start();
+		},
 
-			// Uses layout, fill, words
-			function drawCloudWords (words, something) {
-				console.log(words, something, layout.size()[0], layout.size()[1]);
+		drawCloudWords: function (words) {
 
-				d3.select("#cloud-container svg").remove()
-				d3.select("#cloud-container").append("svg")
-				    .attr("width", layout.size()[0])
-				    .attr("height", layout.size()[1])
-				.append("g")
-				    .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-				.selectAll("text")
-				    .data(words)
-				.enter().append("text")
-				    .style("font-size", function (d) { return d.size + "px"; })
-				    .style("font-family", "Impact")
-				    .style("fill", function (d) { return d.colour; })
-				    .attr("text-anchor", "middle")
-				    .attr("transform", function (d) {
-				      	return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-				    })
-				    .text(function (d) { return d.text; });
-			}
+			var update = this.updatePanel;
+
+			d3.select("#cloud-container svg").remove()
+			d3.select("#cloud-container").append("svg")
+			    .attr("width", this.layout.size()[0])
+			    .attr("height", this.layout.size()[1])
+			.append("g")
+			    .attr("transform", "translate(" + this.layout.size()[0] / 2 + "," + this.layout.size()[1] / 2 + ")")
+			.selectAll("text")
+			    .data(words)
+			.enter().append("text")
+			    .style("font-size", function (d) { return d.size + "px"; })
+			    .style("font-family", "Impact")
+			    .style("fill", function (d) { return d.colour; })
+			    .attr("text-anchor", "middle")
+			    .attr("transform", function (d) {
+			      	return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+			    })
+			    .on("mouseover", function (d) { 
+			    	update(d);
+			    	d3.select("text.glow").classed("glow", false);
+			    	d3.select(this).classed("glow", true);
+			    })
+			    .text(function (d) { return d.text; });
 		},
 
 		pickWidthHeight: function () {
 			// Constants
 			var max_w = 1200,
 				min_w = 500,
-				max_h = 800
-				min_h = 500;
+				max_h = 600
+				min_h = 400;
 
 			// Current window (inner) dimensions
 			var win_w = window.innerWidth,
@@ -117,11 +127,20 @@
 				return "red";
 			}
 			return "grey";
+		},
+
+		updatePanel: function (d) {
+			$("#total_volume")[0].innerHTML = d.details.total_volume;
+			$("#sentiment_positive")[0].innerHTML = d.details.sentiment_breakdown.hasOwnProperty("positive") ?
+				d.details.sentiment_breakdown.positive : "&dash;";
+			$("#sentiment_neutral")[0].innerHTML = d.details.sentiment_breakdown.hasOwnProperty("neutral") ?
+				d.details.sentiment_breakdown.neutral : "&dash;";
+			$("#sentiment_negative")[0].innerHTML = d.details.sentiment_breakdown.hasOwnProperty("negative") ?
+				d.details.sentiment_breakdown.negative : "&dash;";
 		}
 
 	});
 
-	// Create one of these views here, since we're not waiting for anything and it's the main view.
 	var mainView = new MainView();
 
 }) (jQuery);

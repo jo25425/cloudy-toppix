@@ -1,30 +1,48 @@
-
-body{
-    background-color: dimgrey;
-}
-h1{
-    padding: 15px 5px;
-    text-align: center;
-    border-bottom: 1px dimgrey solid;
-    font-family: fantasy;
-    font-weight: 200;
-    color: dimgrey;
-}
 .main-container {
     width: 90%;
     min-width: 500px;
     max-width: 1200px;
     margin: auto;
-    background-color: #F7F7F7;
     border-radius: 5px;
 }
 .chart-container{
-    min-height: 500px;
-    max-height: 800px;
+    min-height: 400px;
+    max-height: 600px;
 }
-.col-70pct{
-    width: 70%;
+.panel-info {
+    position: absolute;
+    top: 15px;
+    right: 10%;
+    min-width: 250px;
 }
-.col-30pct{
-    width: 30%;
+.panel-info table{
+    width: 100%;
+}
+td {
+    padding-bottom: 4px;
+}
+table .value {
+    text-align: right;
+}
+tr:last-child td {
+    border-top: solid 1px;
+    padding-top: 6px;
+    padding-bottom: 0px;
+}
+text.glow, text.glow:hover, text.glow:focus {
+    text-decoration: none;
+    color: #aaf;
+    text-shadow: none;
+    -webkit-transition: 500ms linear 0s;
+    -moz-transition: 500ms linear 0s;
+    -o-transition: 500ms linear 0s;
+    transition: 100ms linear 0s;
+    outline: 0 none;
+}
+text.glow, text.glow:hover, text.glow:focus {
+    color: #fff;
+    text-shadow: -1px 1px 8px #ffc, 1px -1px 8px #fff;
+}
+.draggablePanel .panel-heading {
+    cursor: move;
 }
