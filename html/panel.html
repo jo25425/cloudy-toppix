@@ -1,0 +1,42 @@
+<table>
+    <tr>
+    	<th>Sentiment</th>
+    	<th class="value">Volume</th>
+    </tr>
+    <tr>
+    	<td>Positive</td>
+    	<td class="value">
+    		<% if (topic.sentiment.hasOwnProperty("positive")) { %>
+    			<%- topic.sentiment.positive %>
+    		<% } else { %>
+    			&dash;
+    		<% } %>
+    	</td>
+    </tr>
+    <tr>
+    	<td>Neutral</td>
+    	<td class="value">
+    		<% if (topic.sentiment.hasOwnProperty("neutral")) { %>
+    			<%- topic.sentiment.neutral %>
+    		<% } else { %>
+    			&dash;
+    		<% } %>
+    	</td>
+    </tr>
+    <tr>
+    	<td>Negative</td>
+    	<td class="value">
+    		<% if (topic.sentiment.hasOwnProperty("negative")) { %>
+    			<%- topic.sentiment.negative %>
+    		<% } else { %>
+    			&dash;
+    		<% } %>
+    	</td>
+    </tr>
+    <tr>
+    	<td>Total</td>
+    	<td class="value">
+    		<%- topic.volume %>
+    	</td>
+    </tr>
+</table>
