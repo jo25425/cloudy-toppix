@@ -13,7 +13,15 @@
 			d3.json("topics.json", _.bind(function (error, json) {
 		  	
 				  	if (error) {
-				  		return alert(error);
+				  		console.log(error);
+				  		if (error.status) {
+				  			return alert("The file topics.json couldn't be read.\n" 
+				  				+ error.status.toString() + ' ' + error.statusText);
+				  		} else {
+				  			return alert("The file topics.json couldn't be parsed.\n" 
+				  				+ error);
+				  		}
+				  		
 				  	}
 
 				  	this.data = json.topics;
